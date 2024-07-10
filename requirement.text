@@ -27,6 +27,7 @@ queuelib==1.7.0
 requests==2.32.3
 requests-file==2.1.0
 Scrapy==2.11.2
+scrapy-splash==0.9.0
 service-identity==24.1.0
 six==1.16.0
 tldextract==5.1.2
