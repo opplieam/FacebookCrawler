@@ -19,6 +19,7 @@ class FacebookSpiderMiddleware:
         # This method is used by Scrapy to create your spiders.
         s = cls()
         crawler.signals.connect(s.spider_opened, signal=signals.spider_opened)
+        crawler.signals.connect(s.spider_closed, signal=signals.spider_closed)
         return s
 
     def process_spider_input(self, response, spider):
@@ -54,6 +55,13 @@ class FacebookSpiderMiddleware:
 
     def spider_opened(self, spider):
         spider.logger.info("Spider opened: %s" % spider.name)
+
+    def spider_closed(self, spider):
+        print("-----")
+        print("Open database connection")
+        print("Store data in to database")
+        print("Close database connection")
+        print("-----")
 
 
 class FacebookDownloaderMiddleware:

@@ -48,6 +48,7 @@ COOKIES_ENABLED = True
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 SPIDER_MIDDLEWARES = {
     'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,
+    'facebook.middlewares.FacebookSpiderMiddleware': 110,
 }
 
 DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
