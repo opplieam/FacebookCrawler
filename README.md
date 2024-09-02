@@ -3,6 +3,8 @@ Facebook page crawler is a web spider for facebook, written in [Scrapy](https://
 support only Facebook Page. Given a page id, It can extract all the posts, images url, reaction count, comment count 
 and so on.
 
+This project is the new version of [this repo](https://github.com/opplieam/Facebook_page_crawler)
+
 ## DISCLAIMER
 This script is not authorized by Facebook. For commercial used please contact [Facebook](https://facebook.comorg/).
 
