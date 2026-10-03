@@ -57,11 +57,7 @@ class FacebookSpiderMiddleware:
         spider.logger.info("Spider opened: %s" % spider.name)
 
     def spider_closed(self, spider):
-        print("-----")
-        print("Open database connection")
-        print("Store data in to database")
-        print("Close database connection")
-        print("-----")
+        pass
 
 
 class FacebookDownloaderMiddleware:

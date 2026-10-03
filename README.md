@@ -1,4 +1,7 @@
 # Facebook page crawler
+
+Note: a modernized 2026/2027 version is on the list. It drops Splash in favor of current Scrapy plus a maintained browser approach.
+
 Facebook page crawler is a web spider for facebook, written in [Scrapy](https://scrapy.org/) framework Currently, 
 support only Facebook Page. Given a page id, It can extract all the posts, images url, reaction count, comment count 
 and so on.
@@ -20,13 +23,14 @@ Try to increase download_delay in `settings.py`
 
 ## Installation
 
-It's recommended to install inside an isolate environment. In this case, I had provided `requirement.text` 
+It's recommended to install inside an isolate environment. In this case, I had provided `requirement.text`
 that can be used by `pip`
 
-`python3.10`
-`pip install -r requirements.txt`
+`python3.14`
 
-You also need `docker` to run headless browser service like splash.
+`pip install -r requirement.text`
+
+No `docker` or Splash service is needed. Login is a plain form POST and session cookies are kept by Scrapy.
 
 ## Data schema
 
@@ -104,23 +108,6 @@ Splash is lightweight headless browser which run as a separate service. So it's 
 a large scale web crawling system. You can use something like Selenium or Playwright, but it is memory hog. it can be 
 expensive in a long run when running in cloud.
 
-## How about database
-
-The recommend way to store data into database is, storing after the spider done the job. or when the spider is 
-in a close signal state. Ideally the step should be like this
-
-```
-- Spider crawl data and store result as output.json file
-- After spider done a jobs. Download or open file
-- Crawl all data into database
-Please see `middlewares.py`:22 as example
-```
-
-Scraping is already an IO bound task. If you inject another IO bound task like writing to a database. It's not going 
-to scale well in the large scale crawling system.
-
-Also, Most database doesn't optimize for writing a query. Unless you are using a `CQRS pattern` Then it's ok to inject
-the database call.
 
 ## Thing that can be improved
 

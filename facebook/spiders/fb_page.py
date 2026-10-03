@@ -40,9 +40,7 @@ class FbPageSpider(FbBaseSpider):
             yield Request(
                 url=post_url,
                 callback=self.parse_post,
-                cookies=response.meta.get("cookies"),
                 meta={
-                    "cookies": response.meta.get("cookies"),
                     "page_name": page_name,
                     "page_url": response.url,
                     "post_url": post_url
@@ -57,9 +55,7 @@ class FbPageSpider(FbBaseSpider):
         yield Request(
             url=stream_pagination_url,
             callback=self.parse_pagination,
-            cookies=response.meta.get("cookies"),
             meta={
-                "cookies": response.meta.get("cookies"),
                 "page_name": page_name,
                 "page_url": response.url,
             }
@@ -75,9 +71,7 @@ class FbPageSpider(FbBaseSpider):
             yield Request(
                 url=post_url,
                 callback=self.parse_post,
-                cookies=response.meta.get("cookies"),
                 meta={
-                    "cookies": response.meta.get("cookies"),
                     "page_name": response.meta.get("page_name"),
                     "page_url": response.meta.get("page_url"),
                     "post_url": post_url
@@ -94,9 +88,7 @@ class FbPageSpider(FbBaseSpider):
         yield Request(
             url=next_page_url,
             callback=self.parse_pagination,
-            cookies=response.meta.get("cookies"),
             meta={
-                "cookies": response.meta.get("cookies"),
                 "page_name": response.meta.get("page_name"),
                 "page_url": response.meta.get("page_url")
             }

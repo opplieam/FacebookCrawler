@@ -6,7 +6,7 @@
 import scrapy
 from scrapy import Field
 from scrapy.loader import ItemLoader
-from scrapy.loader.processors import TakeFirst, Join, Identity, Compose
+from itemloaders.processors import TakeFirst, Join, Identity, Compose
 
 
 class FacebookPostItem(scrapy.Item):
