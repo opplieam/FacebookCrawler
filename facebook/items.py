@@ -4,9 +4,9 @@
 # https://docs.scrapy.org/en/latest/topics/items.html
 
 import scrapy
+from itemloaders.processors import Compose, Identity, Join, TakeFirst
 from scrapy import Field
 from scrapy.loader import ItemLoader
-from itemloaders.processors import TakeFirst, Join, Identity, Compose
 
 
 class FacebookPostItem(scrapy.Item):
