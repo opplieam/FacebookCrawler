@@ -1,3 +1,5 @@
+"""Page spider: timeline story url, then full post parse."""
+
 import base64
 import re
 from typing import Any
@@ -7,7 +9,6 @@ from itemloaders.processors import MapCompose
 from scrapy import Request
 from scrapy.http import Response
 from scrapy.selector import Selector
-from scrapy.utils.response import open_in_browser  # noqa: F401
 from scrapy_playwright.page import PageMethod
 
 from ..items import FacebookCommentItemLoader, FacebookPostItemLoader
@@ -15,16 +16,18 @@ from .fb_base import AUTH_FILE, FbBaseSpider
 
 
 class FbPageSpider(FbBaseSpider):
+    """Scrape one Facebook page timeline into post items."""
+
     name = 'fb_page'
 
-    def parse_page(self, response: Response, **kwargs: Any) -> Any:
+    def parse_page(self, response: Response, **_kwargs: Any) -> Any:
+        """Build the story url from page-level ids and follow it."""
         # open_in_browser(response)
         page_name = response.css('meta[property="og:title"]::attr(content)').get()
         if not page_name:
             title = response.meta.get("page_name", response.xpath("//title/text()").get())
             page_name = re.sub(r"^\(\d+\)\s*", "", title or "")
-        # TODO: infinite scroll the timeline so older posts load
-        # before harvesting their story ids.
+        # Infinite scroll is tracked in README; the timeline yields one story here.
         articles = response.css('div[data-pagelet="TimelineFeedUnit_0"] div[role="article"]')
         self.logger.info("timeline articles: %d", len(articles))
 
@@ -58,7 +61,8 @@ class FbPageSpider(FbBaseSpider):
             }
         )
 
-    def parse_post(self, response: Response, **kwargs: Any) -> Any:
+    def parse_post(self, response: Response, **_kwargs: Any) -> Any:
+        """Extract the post item with counts and comments."""
         # open_in_browser(response)
         post_id_match = re.search(r'"subscription_target_id":"(\d+)"', response.text)
         post_id = post_id_match.group(1) if post_id_match else ""

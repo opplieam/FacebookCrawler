@@ -1,7 +1,4 @@
-# Define here the models for your scraped items
-#
-# See documentation in:
-# https://docs.scrapy.org/en/latest/topics/items.html
+"""Item models for posts and comments."""
 
 import scrapy
 from itemloaders.processors import Compose, Identity, Join, TakeFirst
@@ -10,6 +7,8 @@ from scrapy.loader import ItemLoader
 
 
 class FacebookPostItem(scrapy.Item):
+    """One Facebook page post with counts."""
+
     page_id = Field()
     page_name = Field()
     page_url = Field()
@@ -25,6 +24,8 @@ class FacebookPostItem(scrapy.Item):
 
 
 class FacebookPostItemLoader(ItemLoader):
+    """Loader keeping single values, lists for text and comments."""
+
     default_item_class = FacebookPostItem
     default_output_processor = TakeFirst()
 
@@ -34,6 +35,8 @@ class FacebookPostItemLoader(ItemLoader):
 
 
 class FacebookCommentItem(scrapy.Item):
+    """One comment with author and reactions."""
+
     comment_id = Field()
     comment_text = Field()
     comment_reaction_count = Field()
@@ -42,9 +45,10 @@ class FacebookCommentItem(scrapy.Item):
 
 
 class FacebookCommentItemLoader(ItemLoader):
+    """Loader joining comment text, stripping author names."""
+
     default_item_class = FacebookCommentItem
     default_output_processor = TakeFirst()
 
     comment_text_out = Join()
     author_name_out = Compose(TakeFirst(), lambda v: v.rstrip())
-

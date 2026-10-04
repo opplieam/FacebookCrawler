@@ -1,3 +1,5 @@
+"""Shared spider base: session handling and page fan-out."""
+
 from typing import Any, ClassVar
 
 from scrapy import Request, Spider
@@ -11,6 +13,7 @@ AUTH_FILE = "auth.json"
 
 
 class FbBaseSpider(Spider):
+    """Base spider holding the Playwright session."""
 
     base_url = 'https://www.facebook.com/'
 
@@ -19,7 +22,6 @@ class FbBaseSpider(Spider):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.parse_page = None
         page_id_arg = kwargs.get("page_id")
 
         if not page_id_arg:
@@ -32,6 +34,7 @@ class FbBaseSpider(Spider):
             self.page_id = [page_id_arg]
 
     async def start(self) -> Any:
+        """Open the landing page to establish the session."""
         yield Request(
             url=self.base_url, callback=self.parse,
             meta={
@@ -40,7 +43,12 @@ class FbBaseSpider(Spider):
             },
         )
 
-    def parse(self, response: Response, **kwargs: Any) -> Any:
+    def parse_page(self, response: Response, **_kwargs: Any) -> Any:
+        """Parse one timeline page. Implemented by subclasses."""
+        raise NotImplementedError
+
+    def parse(self, response: Response, **_kwargs: Any) -> Any:
+        """Fan out one timeline request per page id."""
         if response.xpath("//form[@id='login_form']").get():
             raise CloseSpider("Session expired, rerun python save_auth.py.")
         for page_id in self.page_id:

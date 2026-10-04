@@ -8,10 +8,14 @@ FB_PASSWORD ?=
 FB_PAGE_ID ?=
 FB_OUTPUT ?= fb.json
 
-.PHONY: pw-server-up pw-server-logs pw-server-down install check crawl freeze auth
+.PHONY: pw-server-up pw-server-logs pw-server-down install check crawl freeze auth lint
 
 auth:
 	python save_auth.py
+
+lint:
+	venv/bin/ruff check facebook/
+	venv/bin/pylint facebook/
 
 pw-server-up:
 	docker run -d -p $(PW_PORT):3000 --name $(PW_NAME) --ipc=host \
