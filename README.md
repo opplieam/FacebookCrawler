@@ -1,4 +1,4 @@
-# FacebookCrawler
+# FacebookScraper
 
 This is the 2026/2027 version.
 
@@ -62,7 +62,7 @@ The browser runs outside Python, like Splash did:
 - Scrapy connects over `PLAYWRIGHT_CONNECT_URL=ws://localhost:3000/`.
 - `make pw-server-logs` tails it, `make pw-server-down` stops it.
 
-Each crawl page is a remote Playwright page. The Python process stays
+Each scraped page is a remote Playwright page. The Python process stays
 light and the browser side scales independently.
 
 ## Manual login
@@ -72,13 +72,13 @@ Automated login always trips the bot check, so login is manual, once:
 - `make auth` opens a visible Chromium at the Facebook login page.
 - Log in with the test account, clear 2FA or the bot challenge if one
   appears, wait for the feed, then press Enter.
-- The session is saved to `auth.json` and every crawl request reuses it
+- The session is saved to `auth.json` and every scrape request reuses it
   as a Playwright storage state.
 
 If the session expires the spider stops with `Session expired, rerun
 python save_auth.py`. Just run `make auth` again.
 
-## Running the crawl
+## Running the scraper
 
 ```
 make pw-server-up
@@ -98,7 +98,7 @@ the post item with counts and comments.
 
 Each item in the output JSON:
 
-- page_id, page_name, page_url: the crawled page.
+- page_id, page_name, page_url: the scraped page.
 - post_id: story fbid from the UFI JSON.
 - post_url: `story.php?story_fbid=...&id=...` permalink.
 - post_text: full message text.
@@ -129,7 +129,7 @@ Each item in the output JSON:
   (`make pw-server-up`) or the `playwright` client and the Docker image
   versions drifted. They must match.
 - Session expired mid-run. The spider stops and asks to rerun
-  `make auth`. Refresh `auth.json` and crawl again.
+  `make auth`. Refresh `auth.json` and scrape again.
 - Empty output. The timeline render changed. Save a fresh snapshot and
   check the article selectors against it.
 - Wrong text language. Post and comment language follows the test
